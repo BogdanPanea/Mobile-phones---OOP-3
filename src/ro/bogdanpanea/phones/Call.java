@@ -4,7 +4,7 @@ public class Call {
 
     private String calledNumber;
 
-    public Call(String calledNumber) {
+    Call(String calledNumber) {
 
         this.calledNumber = calledNumber;
     }

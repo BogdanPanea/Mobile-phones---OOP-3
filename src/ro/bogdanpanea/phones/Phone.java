@@ -2,18 +2,18 @@ package ro.bogdanpanea.phones;
 
 public interface Phone {
 
-    public void newContact(int pozitieAgenda, String name, String phoneNumber);
+    void newContact(int pozitieAgenda, String name, String phoneNumber);
 
-    public void listContacts();
+    void listContacts();
 
-    public void sendSMS(String bodyMessage, String recipient);
+    void sendSMS(String bodyMessage, String recipient);
 
-    public void viewSMS();
+    void viewSMS();
 
-    public void viewSMS(String number);
+    void viewSMS(String number);
 
-    public void call(String number);
+    void call(String number);
 
-    public void viewCalls();
+    void viewCalls();
 
 }

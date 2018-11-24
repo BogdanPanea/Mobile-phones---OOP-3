@@ -4,47 +4,48 @@ import java.util.*;
 
 public class MobileModel extends MobileBrand {
 
+    private static int lungimeSMS = 100;
+
     private String modelName;
     private String color;
     private String material;
     private int batteryLife;
     private final int imei;
 
-    Map<String, Integer> batterisLifes = new HashMap<String, Integer>();
-
     private Contact contact;
     private Call call;
     private Message message;
 
-    List<Contact> Contacts = new ArrayList<Contact>();
-    List<Message> Messages = new ArrayList<Message>();
-    List<Call> Calls = new ArrayList<Call>();
+    private List<Contact> contacts = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
+    private List<Call> calls = new ArrayList<>();
 
-    public MobileModel(String brandName, String modelName, String color, String material, int imei) {
+    MobileModel(String brandName, String modelName, String color, String material, int imei) {
         super(brandName);
 
-        batterisLifes.put("Note 1", 76);
-        batterisLifes.put("Note 2", 89);
-        batterisLifes.put("Xperia 1", 68);
-        batterisLifes.put("Xperia 2", 98);
+        Map<String, Integer> batterisLife = new HashMap<>();
+        batterisLife.put("Note 1", 76);
+        batterisLife.put("Note 2", 75);
+        batterisLife.put("Xperia 1", 68);
+        batterisLife.put("Xperia 2", 98);
 
         this.modelName = modelName;
         this.color = color;
         this.material = material;
-        this.batteryLife = batterisLifes.get(modelName);
+        this.batteryLife = batterisLife.get(modelName);
         this.imei = imei;
     }
 
     public void newContact(int pozitieAgenda, String name, String phoneNumber) {
 
         contact = new Contact(name, phoneNumber);
-        Contacts.add(pozitieAgenda, contact);
+        contacts.add(pozitieAgenda, contact);
     }
 
     @Override
     public void listContacts() {
 
-        for (Contact contacte : Contacts) {
+        for (Contact contacte : contacts) {
 
             System.out.println(contacte);
 
@@ -55,19 +56,26 @@ public class MobileModel extends MobileBrand {
     @Override
     public void sendSMS(String bodyMessage, String recipient) {
 
-        if (bodyMessage.length() > 100) {
-            System.out.println("Message too long. Only 100 characters are accepted.");
+        if (batteryLife > 0) {
+            if (bodyMessage.length() > lungimeSMS) {
+                System.out.println("Message too long. Only 100 characters are accepted.");
+            } else {
+                message = new Message(bodyMessage, recipient);
+                messages.add(message);
+                batteryLife = batteryLife - 1;
+            }
         } else {
-            message = new Message(bodyMessage, recipient);
-            Messages.add(message);
-            batteryLife = batteryLife - 1;
+
+            System.out.println("The battery is discharged. Please connect the charger. Message not sent !");
+            System.out.println("----------------------------------");
         }
+
     }
 
     @Override
     public void viewSMS() {
 
-        for (Message mesaj : Messages) {
+        for (Message mesaj : messages) {
 
             System.out.println(mesaj);
         }
@@ -76,9 +84,9 @@ public class MobileModel extends MobileBrand {
 
     public void viewSMS(String number) {
 
-        for (Message mesaj : Messages) {
+        for (Message mesaj : messages) {
 
-            if (mesaj.getRecipient() == number) {
+            if (mesaj.getRecipient().equals(number)) {
                 System.out.println(mesaj);
             }
 
@@ -88,16 +96,23 @@ public class MobileModel extends MobileBrand {
     @Override
     public void call(String number) {
 
-        call = new Call(number);
-        Calls.add(call);
-        batteryLife = batteryLife - 2;
+        if (batteryLife > 1) {
 
+            call = new Call(number);
+            calls.add(call);
+            batteryLife = batteryLife - 2;
+
+        } else {
+
+            System.out.println("Unable to call. The battery is discharged. Please connect the charger.");
+            System.out.println("----------------------------------");
+        }
     }
 
     @Override
     public void viewCalls() {
 
-        for (Call apel : Calls) {
+        for (Call apel : calls) {
 
             System.out.println(apel);
 
@@ -106,6 +121,6 @@ public class MobileModel extends MobileBrand {
     }
 
     public List<Contact> getContacts() {
-        return Contacts;
+        return contacts;
     }
 }

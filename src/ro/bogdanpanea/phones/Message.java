@@ -5,7 +5,7 @@ public class Message {
     private String bodyMessage;
     private String recipient;
 
-    public Message(String bodyMessage, String recipient) {
+    Message(String bodyMessage, String recipient) {
         this.bodyMessage = bodyMessage;
         this.recipient = recipient;
     }
@@ -14,7 +14,7 @@ public class Message {
         return bodyMessage;
     }
 
-    public String getRecipient() {
+    String getRecipient() {
         return recipient;
     }
 
