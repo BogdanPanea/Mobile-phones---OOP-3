@@ -36,10 +36,34 @@ public class MobileModel extends MobileBrand {
         this.imei = imei;
     }
 
-    public void newContact(int pozitieAgenda, String name, String phoneNumber) {
+    public void newContact(int pozitieAgenda, String name, String phoneNumber) throws ValidationException {
 
+        validateContact(phoneNumber);
         contact = new Contact(name, phoneNumber);
         contacts.add(pozitieAgenda, contact);
+    }
+
+    public void validateContact(String phoneNumber) throws ValidationException {
+
+
+        if (phoneNumber == null) {
+            throw new ValidationException("Please try again! Enter a phone number.");
+        } else if (phoneNumber.startsWith("0")) {
+            if (phoneNumber.length() > 10) {
+                throw new ValidationException("Please try again! The phone number " + phoneNumber + " exceeds 10 characters.");
+            } else if (phoneNumber.matches("^(.*)(\\D)(.*)")) {
+                throw new ValidationException("Please try again! The phone number " + phoneNumber + " contains letters!");
+            }
+
+        } else if (phoneNumber.startsWith("7")) {
+            if (phoneNumber.length() > 9) {
+                throw new ValidationException("Please try again! The phone number " + phoneNumber + " exceeds 9 characters.");
+            } else if (phoneNumber.matches("^(.*)(\\D)(.*)")) {
+                throw new ValidationException("Please try again! The phone number " + phoneNumber + " contains letters!");
+            }
+        } else {
+            throw new ValidationException("Please try again! You've entered an invalid phone number.");
+        }
     }
 
     @Override

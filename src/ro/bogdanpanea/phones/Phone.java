@@ -2,7 +2,7 @@ package ro.bogdanpanea.phones;
 
 public interface Phone {
 
-    void newContact(int pozitieAgenda, String name, String phoneNumber);
+    void newContact(int pozitieAgenda, String name, String phoneNumber) throws ValidationException;
 
     void listContacts();
 
